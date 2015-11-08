@@ -6,12 +6,12 @@ BitSequence can be created from number, byte array or BitCollector.
 Download jar and doc from subfolder jar.
 
 You can use the following functions:
-	..*subSequence, split, concat, insert, extract of bit sequences
-	..*shift, rotate
-	..*bitwise and, or, xor, not
-	..*set, clear bits
-	..*iterate over bit sequence, boolean or int, reverse iterator
-	..*get binary string, continuous or grouped to byte or half-byte 
+	..* subSequence, split, concat, insert, extract of bit sequences
+	..* shift, rotate
+	..* bitwise and, or, xor, not
+	..* set, clear bits
+	..* iterate over bit sequence, boolean or int, reverse iterator
+	..* get binary string, continuous or grouped to byte or half-byte 
 
 
 Examples for binary string:

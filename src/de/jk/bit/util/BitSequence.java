@@ -34,12 +34,6 @@ import java.util.Iterator;
  * </p>  
  */
 
-/**
- *
- */
-/**
- *
- */
 public class BitSequence implements Iterable<Boolean>{
 
 	

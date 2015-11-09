@@ -3,8 +3,7 @@ Java bit sequence utility, toBinaryString
 
 BitSequence can be created from number, byte array or BitCollector. 
 
-Download jar and doc from subfolder jar.
-[test](https://github.com/kssource/BitSequence/raw/master/README.md)
+Download jar and doc [zip](https://github.com/kssource/BitSequence/raw/master/jar/bitSeq.zip)
 
 You can use the following functions:
 

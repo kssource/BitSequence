@@ -34,7 +34,7 @@ import java.util.Iterator;
  * </p>  
  */
 
-public class BitSequence implements Iterable<Boolean>{
+public class BitSequence implements Iterable<Boolean>, Comparable<BitSequence>{
 
 	
 	public enum ALIGN{
@@ -869,5 +869,48 @@ public class BitSequence implements Iterable<Boolean>{
 		return bitIterator;
 		
 	}
+
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((bInt == null) ? 0 : bInt.hashCode());
+		result = prime * result + targetBitsCount;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BitSequence other = (BitSequence) obj;
+		if (bInt == null) {
+			if (other.bInt != null)
+				return false;
+		} else if (!bInt.equals(other.bInt))
+			return false;
+		if (targetBitsCount != other.targetBitsCount)
+			return false;
+		return true;
+	}
+
+
+
+
+	@Override
+	public int compareTo(BitSequence o) {
+		int result = Integer.compare(this.targetBitsCount, o.getBitCount());
+		if(result == 0){
+			result = this.getAsBigInteger().compareTo(o.getAsBigInteger());
+		}
+		return result;
+	}
+
 	
 }

@@ -7,6 +7,8 @@ Download jar and doc [zip](https://github.com/kssource/BitSequence/raw/master/ja
 
 You can use the following functions:
 
+	* create byte sequence required length from byte array or number
+	* convert back to byte array or number
 	* subSequence, split, concat, insert, extract of bit sequences
 	* shift, rotate
 	* bitwise and, or, xor, not

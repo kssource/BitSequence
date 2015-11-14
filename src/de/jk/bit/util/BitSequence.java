@@ -63,10 +63,17 @@ public class BitSequence implements Iterable<Boolean>, Comparable<BitSequence>{
 	}
 
 	/**
-	 * Constant, specifies that number of bits is determined by the source size.
+	 * Constant, specifies that number of bits is determined by the source type size.
+	 * BitSequence bitCount is calculated as 8 * bytesCount of source. 
 	 */
-	public static final int SOURCE_SIZE = -1;
-	
+	public static final int SOURCE_TYPE_SIZE = -1;
+
+	/**
+	 * Constant, specifies that number of bits is determined by the source minimal representation.
+	 * Applicable at source number. Leading zeros are truncated. 
+	 */
+	public static final int MIN_SIZE = -2;
+
 	private BigInteger bInt;
 	private int targetBitsCount = -1;// bits, coded in this inst  
 
@@ -77,13 +84,13 @@ public class BitSequence implements Iterable<Boolean>, Comparable<BitSequence>{
 	 * Bit count is (length of sourceArr) * 8 .
 	 */
 	public BitSequence(byte[] sourceArr) {
-		this(sourceArr, SOURCE_SIZE, ALIGN.RIGHT);
+		this(sourceArr, SOURCE_TYPE_SIZE, ALIGN.RIGHT);
 	}
 
 	
 
 	
-	// if bitCount == SOURCE_SIZE, calculated bitCount = bytesCount*8
+	// if bitCount == SOURCE_TYPE_SIZE, calculated bitCount = bytesCount*8
 	// if sourceAlign == RIGHT, right-most bitCount bits used, 
 	// if bitCount>sourceBitCount, sequence filled with leading zeros
 	// if sourceAlign == LEFT, left-most bitCount bits used, 
@@ -91,11 +98,15 @@ public class BitSequence implements Iterable<Boolean>, Comparable<BitSequence>{
 
 	/**
 	 * Translates a byte array into BitSequence.
-	 * @param bitCount if bitCount == SOURCE_SIZE, calculated bitCount = bytesCount*8
+	 * @param bitCount if bitCount == SOURCE_TYPE_SIZE, calculated bitCount = bytesCount*8
 	 * @param sourceAlign see above
 	 */
 	public BitSequence(byte[] sourceArr, int bitCount, ALIGN sourceAlign) {
-		if(bitCount <= SOURCE_SIZE){
+		if(bitCount < SOURCE_TYPE_SIZE){
+			throw new IllegalArgumentException("Wrong value of bitCount");
+		}
+		
+		if(bitCount == SOURCE_TYPE_SIZE){
 			targetBitsCount = sourceArr.length*8;
 			bInt = new BigInteger(1, sourceArr);
 		}else{
@@ -107,8 +118,8 @@ public class BitSequence implements Iterable<Boolean>, Comparable<BitSequence>{
 	
 	/**
 	 * Constructs a BitSequence from binary representation of number.
+	 * </br>Sign ignored
 	 * @param number accept BigInteger, Byte, Integer, Long, Short.
-	 * Sign ignored
 	 */
 	public BitSequence(Number number, int bitCount) {
 		initFromNumber(number, bitCount);	
@@ -116,52 +127,52 @@ public class BitSequence implements Iterable<Boolean>, Comparable<BitSequence>{
 
 
 	private void initFromNumber(Number number, int bitCount) {
+		if(bitCount < MIN_SIZE){
+			throw new IllegalArgumentException("Wrong value of bitCount");
+		}
+
+		int len = bitCount;
+		BigInteger inData = null;
+		
 		if(number instanceof BigInteger){
-			BigInteger bi = (BigInteger) number;
-			int len = bitCount;
-			if(bitCount<=SOURCE_SIZE){
-				len = bi.bitLength();
+			inData = (BigInteger) number;
+			inData = inData.abs();
+			if(bitCount<=SOURCE_TYPE_SIZE){
+				len = inData.bitLength();
 			}
-			createBsFromBigInt(bi, len);
 		}else if(number instanceof Byte){
-			int len = bitCount;
-			if(bitCount<=SOURCE_SIZE){
+			if(bitCount==SOURCE_TYPE_SIZE){
 				len = Byte.SIZE;
 			}
-			BigInteger bi = new BigInteger(number.toString());
-			createBsFromBigInt(bi, len);
 		}else if(number instanceof Integer){
-			int len = bitCount;
-			if(bitCount<=SOURCE_SIZE){
+			if(bitCount==SOURCE_TYPE_SIZE){
 				len = Integer.SIZE;
 			}
-			BigInteger bi = new BigInteger(number.toString());
-			createBsFromBigInt(bi, len);
 		}else if(number instanceof Long){
-			int len = bitCount;
-			if(bitCount<=SOURCE_SIZE){
+			if(bitCount==SOURCE_TYPE_SIZE){
 				len = Long.SIZE;
 			}
-			BigInteger bi = new BigInteger(number.toString());
-			createBsFromBigInt(bi, len);
 		}else if(number instanceof Short){
-			int len = bitCount;
-			if(bitCount<=SOURCE_SIZE){
+			if(bitCount==SOURCE_TYPE_SIZE){
 				len = Short.SIZE;
 			}
-			BigInteger bi = new BigInteger(number.toString());
-			createBsFromBigInt(bi, len);
 		}else{
 			throw new IllegalArgumentException("Only BigInteger, Byte, Integer, Long or Short types accepted");
 		}
+
 		
-	}
+		if(!(number instanceof BigInteger)){// not BigInteger
+			inData = new BigInteger(number.toString());
+			inData = inData.abs();
+		}
+
+		if(bitCount==MIN_SIZE){
+			len = inData.bitLength();
+		}
 
 
-	private void createBsFromBigInt(BigInteger bi, int bitCount) {
-		targetBitsCount = bitCount;
-		//convert to positive
-		bInt = bi.abs();
+		targetBitsCount = len;
+		bInt = inData;
 	}
 
 

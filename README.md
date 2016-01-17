@@ -14,7 +14,7 @@ You can use the following functions:
 	* bitwise and, or, xor, not
 	* set, clear bits
 	* iterate over bit sequence, boolean or int, reverse iterator
-	* get binary string, continuous or grouped to byte or half-byte 
+	* get binary string, continuous or grouped to byte, half-byte or any group size 
 
 
 Examples for binary string:
@@ -43,6 +43,10 @@ Examples for binary string:
     BitSequence bs6 = new BitSequence(by, BitSequence.MIN_SIZE);
     System.out.println("by="+by+"->"+bs6.toBynaryString(ALIGN.RIGHT, GROUP.BYTE));
 
+    long l2 = 10;
+    BitSequence bs7 = new BitSequence(l2, 11);
+    System.out.println("l2="+l2+"->"+bs7.toBynaryString(ALIGN.RIGHT, 3));
+
     BitCollector bc = new BitCollector();
     bc.append(32, i);
     System.out.println("i="+i+"->bc->"+bc.toBynaryString(ALIGN.RIGHT, GROUP.BYTE));
@@ -56,6 +60,7 @@ Examples for binary string:
     sh=10->00 0000 0000 1010
     l=10->00000001 010
     by=-10->1010
+    l2=10->00 000 001 010
     i=-10->bc->11111111 11111111 11111111 11110110
 
 

@@ -789,18 +789,35 @@ public class BitSequence implements Iterable<Boolean>, Comparable<BitSequence>{
 		if(groupType == GROUP.CONTINOUSLY){
     		return toBynaryString();
     	}else{
+    		int groupSize = groupType.getSize();
     		if(align == ALIGN.RIGHT){
-        		return toGroupedRightAlignedString(groupType);
+        		return toGroupedRightAlignedString(groupSize);
     		}else{
-        		return toGroupedLeftAlignedString(groupType);
+        		return toGroupedLeftAlignedString(groupSize);
     		}
     	}
     }
 
+	/**
+	 * 
+	 * @param align start grouping on left or right
+	 * @param groupSize any group bit count
+	 */
+	public String toBynaryString(ALIGN align, int groupSize){
+		if(groupSize < 1)	groupSize = 1;
+		else if(groupSize > this.targetBitsCount)	groupSize = this.targetBitsCount;
+		
+		
+		if(align == ALIGN.RIGHT){
+    		return toGroupedRightAlignedString(groupSize);
+		}else{
+    		return toGroupedLeftAlignedString(groupSize);
+		}
+    }
+
 	
 	// with spaces between groups
-	private String toGroupedRightAlignedString(GROUP groupType) {
-		int groupSize = groupType.getSize();
+	private String toGroupedRightAlignedString(int groupSize) {
 		
 		StringBuilder builder = new StringBuilder();
 		
@@ -829,8 +846,7 @@ public class BitSequence implements Iterable<Boolean>, Comparable<BitSequence>{
 	}
 	
 	// with spaces between groups
-	private String toGroupedLeftAlignedString(GROUP groupType) {
-		int groupSize = groupType.getSize();
+	private String toGroupedLeftAlignedString(int groupSize) {
 
 		StringBuilder builder = new StringBuilder();
 		

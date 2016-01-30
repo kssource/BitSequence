@@ -171,6 +171,14 @@ public class BitSequence implements Iterable<Boolean>, Comparable<BitSequence>{
 		}
 
 
+		// if input number value is zero, BigInteger return bit length 0, 
+		// but we expect on param - SOURCE_TYPE_SIZE or MIN_SIZE -  1
+		if(len == 0){
+			if(bitCount==SOURCE_TYPE_SIZE || bitCount==MIN_SIZE){
+				len = 1;
+			}
+		}
+
 		targetBitsCount = len;
 		bInt = inData;
 	}
